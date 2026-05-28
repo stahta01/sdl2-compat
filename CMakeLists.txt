@@ -416,7 +416,7 @@ endif()
 
 # !!! FIXME: what needs to be done for sdl2-compat? Look into this.
 ## SDL2main library...
-if(WIN32)
+if(WIN32 OR CYGWIN)
     add_library(SDL2main STATIC src/SDLmain/windows/SDL_windows_main.c)
     target_link_libraries(SDL2main PRIVATE shell32)
 else()
