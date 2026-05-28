@@ -582,7 +582,9 @@ int stdlib_sscanf(void *arg)
 #pragma GCC diagnostic pop
 #endif
 
-#if defined(_WIN64)
+#if defined(__CYGWIN__)
+#define SIZE_FORMAT "zu"
+#elif defined(_WIN64)
 #define SIZE_FORMAT "I64u"
 #elif defined(__WIN32__)
 #define SIZE_FORMAT "I32u"

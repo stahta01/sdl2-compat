@@ -272,7 +272,7 @@ typedef uint64_t Uint64;
  * <stdint.h> should define these but this is not true all platforms.
  * (for example win32) */
 #ifndef SDL_PRIs64
-#if defined(__WIN32__) || defined(__GDK__)
+#if defined(__WIN32__) && !defined(__CYGWIN__) || defined(__GDK__)
 #define SDL_PRIs64 "I64d"
 #elif defined(PRId64)
 #define SDL_PRIs64 PRId64
@@ -283,7 +283,7 @@ typedef uint64_t Uint64;
 #endif
 #endif
 #ifndef SDL_PRIu64
-#if defined(__WIN32__) || defined(__GDK__)
+#if defined(__WIN32__) && !defined(__CYGWIN__) || defined(__GDK__)
 #define SDL_PRIu64 "I64u"
 #elif defined(PRIu64)
 #define SDL_PRIu64 PRIu64
@@ -294,7 +294,7 @@ typedef uint64_t Uint64;
 #endif
 #endif
 #ifndef SDL_PRIx64
-#if defined(__WIN32__) || defined(__GDK__)
+#if defined(__WIN32__) && !defined(__CYGWIN__) || defined(__GDK__)
 #define SDL_PRIx64 "I64x"
 #elif defined(PRIx64)
 #define SDL_PRIx64 PRIx64
@@ -305,7 +305,7 @@ typedef uint64_t Uint64;
 #endif
 #endif
 #ifndef SDL_PRIX64
-#if defined(__WIN32__) || defined(__GDK__)
+#if defined(__WIN32__) && !defined(__CYGWIN__) || defined(__GDK__)
 #define SDL_PRIX64 "I64X"
 #elif defined(PRIX64)
 #define SDL_PRIX64 PRIX64
