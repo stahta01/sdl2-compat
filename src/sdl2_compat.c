@@ -381,10 +381,16 @@ static bool SDL2Compat_CheckDebugLogging(void)
 /* Obviously we can't use SDL_LoadObject() to load SDL3.  :)  */
 /* FIXME: Updated library names after https://github.com/libsdl-org/SDL/issues/5626 solidifies.  */
 static char loaderror[256];
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(SDL_PLATFORM_CYGWIN)
     static HMODULE Loaded_SDL3 = NULL;
     #define DIRSEP "\\"
-    #define SDL3_LIBNAME "SDL3.dll"
+    #if defined(SDL_PLATFORM_MSYS)
+        #define SDL3_LIBNAME "msys-SDL3.dll"
+    #elif defined(SDL_PLATFORM_CYGWIN)
+        #define SDL3_LIBNAME "cygSDL3.dll"
+    #else
+        #define SDL3_LIBNAME "SDL3.dll"
+    #endif
     #define LoadSDL3Library() ((Loaded_SDL3 = LoadLibraryA(SDL3_LIBNAME)) != NULL)
     #define LookupSDL3Sym(sym) (void *)GetProcAddress(Loaded_SDL3, sym)
     #define CloseSDL3Library() { if (Loaded_SDL3) { FreeLibrary(Loaded_SDL3); Loaded_SDL3 = NULL; } }
@@ -624,7 +630,7 @@ static void OS_GetExeName(char *buf, const unsigned maxpath, bool *use_base_path
         }
     }
 }
-#elif defined(_WIN32)
+#elif defined(_WIN32) || defined(__CYGWIN__)
 static void OS_GetExeName(char *buf, const unsigned maxpath, bool *use_base_path)
 {
     buf[0] = '\0';
@@ -1059,7 +1065,7 @@ LoadSDL3(void)
 
         okay = LoadSDL3Library();
         if (!okay) {
-            SDL2COMPAT_stpcpy(loaderror, "Failed loading SDL3 library.");
+            SDL2COMPAT_stpcpy(loaderror, "Failed loading SDL3 library [" SDL3_LIBNAME "].");
         } else {
             /* Load SDL_GetVersion() alone first to allow us to check and log the required SDL3 version */
             SDL3_GetVersion = (SDL3_GetVersion_t) LoadSDL3Symbol("SDL_GetVersion", &okay);
@@ -1225,6 +1231,9 @@ static void dllquit(void)
 #if defined(_MSC_VER) && !defined(__FLTUSED__)
 #define __FLTUSED__
 __declspec(selectany) int _fltused = 1;
+#endif
+#if defined(__CYGWIN__)
+#define _DllMainCRTStartup DllMain
 #endif
 #if defined(__MINGW32__)
 #define _DllMainCRTStartup DllMainCRTStartup
