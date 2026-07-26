@@ -12611,7 +12611,7 @@ SDL_IntersectFRectAndLine(const SDL_FRect *rect, float *X1, float *Y1, float *X2
     return SDL2_TRUE;
 }
 
-#if defined(SDL_PLATFORM_WINDOWS)
+#if defined(SDL_PLATFORM_WINDOWS) && !defined(SDL_PLATFORM_CYGWIN)
 
 SDL_DECLSPEC SDL_Thread *SDLCALL
 SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data,
@@ -12641,7 +12641,7 @@ SDL_CreateThreadWithStackSize(SDL_ThreadFunction fn, const char *name, const siz
     return SDL2_CreateThreadWithStackSize(fn, name, stacksize, data, NULL, NULL);
 }
 
-#endif /* SDL_PLATFORM_WINDOWS */
+#endif /* SDL_PLATFORM_WINDOWS && !SDL_PLATFORM_CYGWIN */
 
 SDL_DECLSPEC unsigned long SDLCALL
 SDL_ThreadID(void)

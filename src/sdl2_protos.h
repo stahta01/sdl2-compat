@@ -43,7 +43,7 @@ SDL2_PROTO(void,LogMessage,(int a, SDL2_LogPriority b, SDL_PRINTF_FORMAT_STRING 
 SDL2_PROTO(int,sscanf,(const char *a, SDL_SCANF_FORMAT_STRING const char *b, ...))
 SDL2_PROTO(int,snprintf,(SDL_OUT_Z_CAP(b) char *a, size_t b, SDL_PRINTF_FORMAT_STRING const char *c, ...))
 
-#if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_GDK)
+#if defined(SDL_PLATFORM_WIN32) && !defined(SDL_PLATFORM_CYGWIN) || defined(SDL_PLATFORM_GDK)
 SDL2_PROTO(SDL_Thread*,CreateThread,(SDL_ThreadFunction a, const char *b, void *c, pfnSDL_CurrentBeginThread d, pfnSDL_CurrentEndThread e))
 #elif defined(SDL_PLATFORM_OS2)
 SDL2_PROTO(SDL_Thread*,CreateThread,(SDL_ThreadFunction a, const char *b, void *c, pfnSDL_CurrentBeginThread d, pfnSDL_CurrentEndThread e))
@@ -726,7 +726,7 @@ SDL2_PROTO(SDL2_bool,IsTablet,(void))
 SDL2_PROTO(SDL_DisplayOrientation,GetDisplayOrientation,(int a))
 SDL2_PROTO(SDL2_bool,HasColorKey,(SDL2_Surface *a))
 
-#if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_GDK)
+#if defined(SDL_PLATFORM_WIN32) && !defined(SDL_PLATFORM_CYGWIN) || defined(SDL_PLATFORM_GDK)
 SDL2_PROTO(SDL_Thread*,CreateThreadWithStackSize,(SDL_ThreadFunction a, const char *b, const size_t c, void *d, pfnSDL_CurrentBeginThread e, pfnSDL_CurrentEndThread f))
 #elif defined(SDL_PLATFORM_OS2)
 SDL2_PROTO(SDL_Thread*,CreateThreadWithStackSize,(SDL_ThreadFunction a, const char *b, const size_t c, void *d, pfnSDL_CurrentBeginThread e, pfnSDL_CurrentEndThread f))
