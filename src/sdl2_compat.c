@@ -381,10 +381,16 @@ static bool SDL2Compat_CheckDebugLogging(void)
 /* Obviously we can't use SDL_LoadObject() to load SDL3.  :)  */
 /* FIXME: Updated library names after https://github.com/libsdl-org/SDL/issues/5626 solidifies.  */
 static char loaderror[256];
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(SDL_PLATFORM_CYGWIN)
     static HMODULE Loaded_SDL3 = NULL;
     #define DIRSEP "\\"
-    #define SDL3_LIBNAME "SDL3.dll"
+    #if defined(SDL_PLATFORM_MSYS)
+        #define SDL3_LIBNAME "msys-SDL3.dll"
+    #elif defined(SDL_PLATFORM_CYGWIN)
+        #define SDL3_LIBNAME "cygSDL3.dll"
+    #else
+        #define SDL3_LIBNAME "SDL3.dll"
+    #endif
     #define LoadSDL3Library() ((Loaded_SDL3 = LoadLibraryA(SDL3_LIBNAME)) != NULL)
     #define LookupSDL3Sym(sym) (void *)GetProcAddress(Loaded_SDL3, sym)
     #define CloseSDL3Library() { if (Loaded_SDL3) { FreeLibrary(Loaded_SDL3); Loaded_SDL3 = NULL; } }
@@ -12602,7 +12608,7 @@ SDL_IntersectFRectAndLine(const SDL_FRect *rect, float *X1, float *Y1, float *X2
     return SDL2_TRUE;
 }
 
-#if defined(SDL_PLATFORM_WINDOWS)
+#if defined(SDL_PLATFORM_WINDOWS) && !defined(SDL_PLATFORM_CYGWIN)
 
 SDL_DECLSPEC SDL_Thread *SDLCALL
 SDL_CreateThread(SDL_ThreadFunction fn, const char *name, void *data,
@@ -12632,7 +12638,7 @@ SDL_CreateThreadWithStackSize(SDL_ThreadFunction fn, const char *name, const siz
     return SDL2_CreateThreadWithStackSize(fn, name, stacksize, data, NULL, NULL);
 }
 
-#endif /* SDL_PLATFORM_WINDOWS */
+#endif /* SDL_PLATFORM_WINDOWS && !SDL_PLATFORM_CYGWIN */
 
 SDL_DECLSPEC unsigned long SDLCALL
 SDL_ThreadID(void)

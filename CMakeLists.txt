@@ -359,7 +359,7 @@ if(APPLE)
       OUTPUT_NAME "SDL2-2.0"
       SOVERSION "0"
   )
-elseif(UNIX AND NOT ANDROID)
+elseif(UNIX AND NOT (ANDROID OR MSYS))
   # !!! FIXME: check OUTPUT_NAME value
   set_target_properties(SDL2 PROPERTIES
     OUTPUT_NAME "SDL2-2.0"
@@ -416,7 +416,7 @@ endif()
 
 # !!! FIXME: what needs to be done for sdl2-compat? Look into this.
 ## SDL2main library...
-if(WIN32)
+if(WIN32 OR CYGWIN)
     add_library(SDL2main STATIC src/SDLmain/windows/SDL_windows_main.c)
     target_link_libraries(SDL2main PRIVATE shell32)
 else()
@@ -585,6 +585,11 @@ if(SDL2COMPAT_INSTALL)
     set(SDL_RLD_FLAGS "")
     set(SDL_LIBS "-lSDL2main -lSDL2")
     set(SDL_STATIC_LIBS "-lshell32")
+  elseif(MSYS)
+    set(SDL_CFLAGS "${sdl2_public_macros}")
+    set(SDL_RLD_FLAGS "")
+    set(SDL_LIBS "-lcygwin -lSDL2main -lSDL2 -mwindows")
+    set(SDL_STATIC_LIBS "-lshell32")
   elseif(MINGW)
     set(SDL_CFLAGS "${sdl2_public_macros}")
     set(SDL_RLD_FLAGS "")
@@ -636,7 +641,7 @@ if(SDL2COMPAT_INSTALL)
 
   set(SOEXT ${CMAKE_SHARED_LIBRARY_SUFFIX})
   get_target_property(SONAME SDL2 OUTPUT_NAME)
-  if(UNIX AND NOT ANDROID)
+  if(UNIX AND NOT (ANDROID OR CYGWIN))
     install(CODE "
       execute_process(COMMAND \"${CMAKE_COMMAND}\" -E create_symlink
         \"lib${SONAME}${SOPOSTFIX}${SOEXT}\" \"libSDL2${SOPOSTFIX}${SOEXT}\"

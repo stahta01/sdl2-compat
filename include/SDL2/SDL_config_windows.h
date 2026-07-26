@@ -76,7 +76,7 @@ typedef unsigned int uintptr_t;
 #endif /* Visual Studio 2008 */
 #endif /* !_STDINT_H_ && !HAVE_STDINT_H */
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(__LP64__)
 # define SIZEOF_VOIDP 8
 #else
 # define SIZEOF_VOIDP 4
