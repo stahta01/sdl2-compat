@@ -388,7 +388,12 @@ else()
   )
 endif()
 
-if(MINGW)
+if(CYGWIN AND CMAKE_C_COMPILER MATCHES ".*[-]mingw32[-].*")
+  set_property(TARGET SDL2 APPEND_STRING PROPERTY LINK_FLAGS " -nostdlib")
+  # need libgcc for emulating 64-bit operations (e.g. 64-bit division) or __chkstk_ms()
+  # need user32 and kernel32 to prevent linking errors when building
+  target_link_libraries(SDL2 PRIVATE user32 kernel32 gcc)
+elseif(MINGW)
   set_property(TARGET SDL2 APPEND_STRING PROPERTY LINK_FLAGS " -nostdlib")
   if(USE_CLANG)
     if(SDL_CPU_X86)
