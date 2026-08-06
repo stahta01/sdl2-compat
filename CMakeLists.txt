@@ -34,6 +34,13 @@ set(SDL_MINOR_VERSION ${sdl2_compat_VERSION_MINOR})
 set(SDL_MICRO_VERSION ${sdl2_compat_VERSION_PATCH})
 set(SDL_VERSION "${SDL_MAJOR_VERSION}.${SDL_MINOR_VERSION}.${SDL_MICRO_VERSION}")
 
+if(CYGWIN AND CMAKE_C_COMPILER MATCHES ".*[-]mingw32[-].*")
+  set(MINGW 1)
+  set(WINDOWS 1)
+  set(WIN32 1)
+  set(UNIX 0)
+endif()
+
 include(CheckCSourceCompiles)
 include(CheckIncludeFile)
 include(CheckCCompilerFlag)
