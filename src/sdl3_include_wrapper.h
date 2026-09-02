@@ -1336,6 +1336,11 @@
 #define SDL_GetDeviceFormFactorName IGNORE_THIS_VERSION_OF_SDL_GetDeviceFormFactorName
 #define SDL_IsUbuntuTouch IGNORE_THIS_VERSION_OF_SDL_IsUbuntuTouch
 #define SDL_GetNumProperties IGNORE_THIS_VERSION_OF_SDL_GetNumProperties
+#define SDL_JoystickHasSensor IGNORE_THIS_VERSION_OF_SDL_JoystickHasSensor
+#define SDL_SetJoystickSensorEnabled IGNORE_THIS_VERSION_OF_SDL_SetJoystickSensorEnabled
+#define SDL_JoystickSensorEnabled IGNORE_THIS_VERSION_OF_SDL_JoystickSensorEnabled
+#define SDL_GetJoystickSensorDataRate IGNORE_THIS_VERSION_OF_SDL_GetJoystickSensorDataRate
+#define SDL_GetJoystickSensorData IGNORE_THIS_VERSION_OF_SDL_GetJoystickSensorData
 
 
 #define SDL_FUNCTION_POINTER_IS_VOID_POINTER 1
@@ -6572,6 +6577,26 @@
 
 #ifdef SDL_GetNumProperties
 #undef SDL_GetNumProperties
+#endif
+
+#ifdef SDL_JoystickHasSensor
+#undef SDL_JoystickHasSensor
+#endif
+
+#ifdef SDL_SetJoystickSensorEnabled
+#undef SDL_SetJoystickSensorEnabled
+#endif
+
+#ifdef SDL_JoystickSensorEnabled
+#undef SDL_JoystickSensorEnabled
+#endif
+
+#ifdef SDL_GetJoystickSensorDataRate
+#undef SDL_GetJoystickSensorDataRate
+#endif
+
+#ifdef SDL_GetJoystickSensorData
+#undef SDL_GetJoystickSensorData
 #endif
 
 
